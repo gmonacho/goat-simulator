@@ -40,7 +40,7 @@ if __name__ == "__main__":
         except IndexError as err:
             raise PayloadException("Missing simulation count argument") from err
         except Exception as err:
-            raise PayloadException(f"Simulation count argument `{sys.argv[1]}` is invalid")
+            raise PayloadException(f"Simulation count argument `{sys.argv[1]}` is invalid") from err
 
         perform_goat_simulation(door_count=3, simulation_count=simulation_count)
 
