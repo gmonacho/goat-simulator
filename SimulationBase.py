@@ -52,7 +52,7 @@ ESIMULATION_OBJECT_RESULT_KEYS_MAPPING: Mapping[ESimulationObject, Literal['fail
 class SimulationBase:
 
     def __init__(self, door_count: int):
-        self._doors: list[ESimulationObject, ...] = [ESimulationObject.GOAT for _ in range(door_count)]
+        self._doors: list[ESimulationObject] = [ESimulationObject.GOAT for _ in range(door_count)]
         self._doors[randint(0, len(self._doors) - 1)] = ESimulationObject.CAR
         self._results: dict[ESimulationType, SuccessFailureDict] = {
             data.value: SuccessFailureDict(success_count=0, failure_count=0)
