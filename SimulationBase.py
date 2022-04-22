@@ -126,7 +126,7 @@ class SimulationBase:
 
     def simulate_a_door_opening_after_showing_a_goat(self):
         """
-        simulate a door following that rules :
+        simulate a door openning following that rules :
         "Chose a door -> show a goat (another door than chosen one) -> Chose a random door between doors except showed door",
         and save result to results property
         """
