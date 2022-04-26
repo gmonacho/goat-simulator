@@ -2,9 +2,9 @@ import json
 import logging
 import sys
 from collections.abc import Sequence
-from random import randint
+import random
 
-from SimulationException import BadSample
+from SimulationException import BadSample, SimulationException
 from SimulationModel import ESimulationObject, ESimulationType
 from SimulationResult import SimulationResult
 
@@ -19,7 +19,7 @@ class SimulationBase:
 
     def __init__(self, door_count: int):
         self._doors: list[ESimulationObject] = [ESimulationObject.GOAT for _ in range(door_count)]
-        self._doors[randint(0, len(self._doors) - 1)] = ESimulationObject.CAR
+        self._doors[random.randint(0, len(self._doors) - 1)] = ESimulationObject.CAR
         logger.debug(f"Doors : {json.dumps(self._doors)}")
         self._result = SimulationResult()
 
@@ -32,7 +32,7 @@ class SimulationBase:
         get a random door
         :return: tuple containing door index and ESimulationObject
         """
-        index = randint(0, len(self._doors) - 1)
+        index = random.randint(0, len(self._doors) - 1)
         return index, self._doors[index]
 
     def _get_doors_except_indexes(self, indexes: Sequence[int]) -> list[ESimulationObject]:
@@ -43,14 +43,17 @@ class SimulationBase:
         """
         return [obj for i, obj in enumerate(self._doors) if i not in indexes]
 
-    def _get_a_random_door_except_indexes(self, indexes: Sequence[int]):
+    def _get_a_random_door_except_indexes(self, indexes: Sequence[int]) -> tuple[int, ESimulationObject]:
         """
         get a random door between doors except specified doors
         :param indexes: index of doors to except
         :return: a random door between doors except specified doors
         """
         other_doors: list[ESimulationObject] = self._get_doors_except_indexes(indexes=indexes)
-        index = randint(0, len(other_doors) - 1)
+        try:
+            index = random.randint(0, len(other_doors) - 1)
+        except ValueError as err:
+            raise SimulationException(f"Indexes parameter`{indexes}` covers every doors indexes") from err
         return index, other_doors[index]
 
     def _get_a_goat_index_except_indexes(self, indexes: Sequence[int]):
@@ -64,7 +67,7 @@ class SimulationBase:
         ]
         if not goat_doors_indexes:
             raise BadSample("There is only cars behind the doors")
-        return goat_doors_indexes[randint(0, len(goat_doors_indexes) - 1)]
+        return goat_doors_indexes[random.randint(0, len(goat_doors_indexes) - 1)]
 
     def simulate_a_door_opening(self):
         """
