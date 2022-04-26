@@ -21,11 +21,11 @@ class SimulationBase:
         self._doors: list[ESimulationObject] = [ESimulationObject.GOAT for _ in range(door_count)]
         self._doors[randint(0, len(self._doors) - 1)] = ESimulationObject.CAR
         logger.debug(f"Doors : {json.dumps(self._doors)}")
-        self._simulation_result = SimulationResult()
+        self._result = SimulationResult()
 
     @property
     def results(self) -> SimulationResult:
-        return self._simulation_result
+        return self._result
 
     def _get_a_random_door(self) -> tuple[int, ESimulationObject]:
         """
@@ -70,8 +70,8 @@ class SimulationBase:
         """
         simply simulate a door opening and add save simulation result to results property
         """
-        self._simulation_result.add_one_point_to_simulation_type(ESimulationType.OPEN_DIRECTLY,
-                                                                 self._get_a_random_door()[1])
+        self._result.add_one_point_to_simulation_combination(ESimulationType.OPEN_DIRECTLY,
+                                                             self._get_a_random_door()[1])
 
     def simulate_a_door_opening_after_showing_a_goat(self):
         """
@@ -84,8 +84,8 @@ class SimulationBase:
 
         selected_door = self._get_a_random_door_except_indexes(indexes=[showed_goat_index])
 
-        self._simulation_result.add_one_point_to_simulation_type(ESimulationType.OPEN_AFTER_SHOWING_A_GOAT,
-                                                                 selected_door[1])
+        self._result.add_one_point_to_simulation_combination(ESimulationType.OPEN_AFTER_SHOWING_A_GOAT,
+                                                             selected_door[1])
 
     def simulate_another_door_opening_after_selected_one_another(self):
         """
@@ -99,5 +99,5 @@ class SimulationBase:
 
         selected_door = self._get_a_random_door_except_indexes(indexes=[showed_goat_index, selected_door_index])
 
-        self._simulation_result.add_one_point_to_simulation_type(
-            ESimulationType.OPEN_THE_OTHER_DOOR_AFTER_SHOWING_A_GOAT, selected_door[1])
+        self._result.add_one_point_to_simulation_combination(ESimulationType.OPEN_THE_OTHER_DOOR_AFTER_SHOWING_A_GOAT,
+                                                             selected_door[1])
