@@ -29,7 +29,7 @@ def perform_goat_simulation(door_count: int, simulation_count: int):
         simulation_base.simulate_a_door_opening_after_showing_a_goat()
         simulation_base.simulate_another_door_opening_after_selected_one_another()
 
-    logger.info(simulation_base)
+    logger.info(simulation_base.results)
 
 
 if __name__ == "__main__":

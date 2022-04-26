@@ -1,0 +1,2 @@
+class BadSample(Exception):
+    pass
